@@ -76,7 +76,7 @@ func (obj *ICLRRuntimeHost) Start() uintptr {
 	return ret
 }
 
-func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument *uint16, pReturnValue *[]byte) uintptr {
+func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument *uint16, pReturnValue *string) uintptr {
 	ret, _, _ := syscall.SyscallN(
 		obj.vtbl.ExecuteInDefaultAppDomain,
 		6,
