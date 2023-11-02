@@ -1,4 +1,4 @@
-module go-clr
+module github.com/blcokchina110/go-clr
 
 go 1.20
 
