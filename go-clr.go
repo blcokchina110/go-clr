@@ -51,7 +51,7 @@ func GetInstalledRuntimes(metahost *ICLRMetaHost) ([]string, error) {
 // and execute a DLL on disk in the default app domain. It takes in the target runtime, DLLPath, TypeName, MethodName
 // and Argument to use as strings. It returns the return code from the assembly
 func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument string) (retCode []byte, err error) {
-	retCode = -1
+	// retCode = -1
 	if targetRuntime == "" {
 		targetRuntime = "v4"
 	}
@@ -84,7 +84,7 @@ func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument s
 		return
 	}
 	if !isLoadable {
-		return -1, fmt.Errorf("%s is not loadable for some reason", latestRuntime)
+		return nil, fmt.Errorf("%s is not loadable for some reason", latestRuntime)
 	}
 	runtimeHost, err := GetICLRRuntimeHost(runtimeInfo)
 	if err != nil {
