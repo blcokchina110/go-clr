@@ -1,3 +1,4 @@
+//go:build windows
 // +build windows
 
 // go-clr is a PoC package that wraps Windows syscalls necessary to load and the CLR into the current process and
@@ -49,7 +50,7 @@ func GetInstalledRuntimes(metahost *ICLRMetaHost) ([]string, error) {
 // ExecuteDLLFromDisk is a wrapper function that will automatically load the latest installed CLR into the current process
 // and execute a DLL on disk in the default app domain. It takes in the target runtime, DLLPath, TypeName, MethodName
 // and Argument to use as strings. It returns the return code from the assembly
-func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument string) (retCode int16, err error) {
+func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument string) (retCode []byte, err error) {
 	retCode = -1
 	if targetRuntime == "" {
 		targetRuntime = "v4"
@@ -94,16 +95,16 @@ func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument s
 	pTypeName, _ := syscall.UTF16PtrFromString(typeName)
 	pMethodName, _ := syscall.UTF16PtrFromString(methodName)
 	pArgument, _ := syscall.UTF16PtrFromString(argument)
-	var pReturnVal uint16
-	hr = runtimeHost.ExecuteInDefaultAppDomain(pDLLPath, pTypeName, pMethodName, pArgument, &pReturnVal)
+	var pReturnVal []byte
+	hr = runtimeHost.ExecuteInDefaultAppDomain(pDLLPath, pTypeName, pMethodName, pArgument, pReturnVal)
 	err = checkOK(hr, "runtimeHost.ExecuteInDefaultAppDomain")
 	if err != nil {
-		return int16(pReturnVal), err
+		return pReturnVal, err
 	}
 	runtimeHost.Release()
 	runtimeInfo.Release()
 	metahost.Release()
-	return int16(pReturnVal), nil
+	return pReturnVal, nil
 
 }
 

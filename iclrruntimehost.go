@@ -1,3 +1,4 @@
+//go:build windows
 // +build windows
 
 package clr
@@ -25,6 +26,7 @@ type ICLRRuntimeHostVtbl struct {
 	ExecuteApplication        uintptr
 	ExecuteInDefaultAppDomain uintptr
 }
+
 // GetICLRRuntimeHost is a wrapper function that takes an ICLRRuntimeInfo object and
 // returns an ICLRRuntimeHost and loads it into the current process
 func GetICLRRuntimeHost(runtimeInfo *ICLRRuntimeInfo) (*ICLRRuntimeHost, error) {
@@ -74,7 +76,7 @@ func (obj *ICLRRuntimeHost) Start() uintptr {
 	return ret
 }
 
-func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument, pReturnValue *uint16) uintptr {
+func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument *uint16, pReturnValue []byte) uintptr {
 	ret, _, _ := syscall.Syscall9(
 		obj.vtbl.ExecuteInDefaultAppDomain,
 		6,
@@ -83,7 +85,7 @@ func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeNa
 		uintptr(unsafe.Pointer(pwzTypeName)),
 		uintptr(unsafe.Pointer(pwzMethodName)),
 		uintptr(unsafe.Pointer(pwzArgument)),
-		uintptr(unsafe.Pointer(pReturnValue)),
+		uintptr(unsafe.Pointer(&pReturnValue)),
 		0,
 		0,
 		0)
