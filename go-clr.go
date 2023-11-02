@@ -96,7 +96,7 @@ func ExecuteDLLFromDisk(targetRuntime, dllpath, typeName, methodName, argument s
 	pMethodName, _ := syscall.UTF16PtrFromString(methodName)
 	pArgument, _ := syscall.UTF16PtrFromString(argument)
 	var pReturnVal []byte
-	hr = runtimeHost.ExecuteInDefaultAppDomain(pDLLPath, pTypeName, pMethodName, pArgument, pReturnVal)
+	hr = runtimeHost.ExecuteInDefaultAppDomain(pDLLPath, pTypeName, pMethodName, pArgument, &pReturnVal)
 	err = checkOK(hr, "runtimeHost.ExecuteInDefaultAppDomain")
 	if err != nil {
 		return pReturnVal, err
