@@ -47,7 +47,7 @@ func NewICLRRuntimeHostFromPtr(ppv uintptr) *ICLRRuntimeHost {
 }
 
 func (obj *ICLRRuntimeHost) AddRef() uintptr {
-	ret, _, _ := syscall.SyscallN(
+	ret, _, _ := syscall.Syscall(
 		obj.vtbl.AddRef,
 		1,
 		uintptr(unsafe.Pointer(obj)),
@@ -57,7 +57,7 @@ func (obj *ICLRRuntimeHost) AddRef() uintptr {
 }
 
 func (obj *ICLRRuntimeHost) Release() uintptr {
-	ret, _, _ := syscall.SyscallN(
+	ret, _, _ := syscall.Syscall(
 		obj.vtbl.Release,
 		1,
 		uintptr(unsafe.Pointer(obj)),
@@ -67,7 +67,7 @@ func (obj *ICLRRuntimeHost) Release() uintptr {
 }
 
 func (obj *ICLRRuntimeHost) Start() uintptr {
-	ret, _, _ := syscall.SyscallN(
+	ret, _, _ := syscall.Syscall(
 		obj.vtbl.Start,
 		1,
 		uintptr(unsafe.Pointer(obj)),
@@ -77,7 +77,7 @@ func (obj *ICLRRuntimeHost) Start() uintptr {
 }
 
 func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument *uint16, pReturnValue *string) uintptr {
-	ret, _, _ := syscall.SyscallN(
+	ret, _, _ := syscall.Syscall9(
 		obj.vtbl.ExecuteInDefaultAppDomain,
 		6,
 		uintptr(unsafe.Pointer(obj)),
@@ -93,7 +93,7 @@ func (obj *ICLRRuntimeHost) ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeNa
 }
 
 func (obj *ICLRRuntimeHost) GetCurrentAppDomainID(pdwAppDomainId *uint16) uintptr {
-	ret, _, _ := syscall.SyscallN(
+	ret, _, _ := syscall.Syscall(
 		obj.vtbl.GetCurrentAppDomainId,
 		2,
 		uintptr(unsafe.Pointer(obj)),
